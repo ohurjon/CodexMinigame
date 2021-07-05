@@ -28,7 +28,7 @@ dependencies {
     compileOnly 'org.codehaus.plexus:plexus-utils:2.0.6'
 
     compileOnly fileTree(dir: 'libs', include: ['*.jar'])
-    compileOnly spigot("1.12.2")  //TODO
+    compileOnly spigot("1.12.2")
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 
@@ -43,13 +43,17 @@ compileTestKotlin {
 
 spigot {
     authors 'ohurjon'
-    apiVersion //TODO
-    description 'The BasePlugin'
-    depends  //TODO
+    apiVersion '1.12'
+    description 'The COODEX Minigame Plugin'
 }
 
 task relocateShadowJar(type: ConfigureShadowRelocation) {
     target = tasks.shadowJar
+}
+
+task pluginJar(type : Copy){
+    from file("build/libs")
+    into file("E:/Minecraft/Server/1.12/1.12.2_CODEX/plugins")
 }
 
 tasks.shadowJar.dependsOn tasks.relocateShadowJar
