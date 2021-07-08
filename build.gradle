@@ -45,15 +45,25 @@ spigot {
     authors 'ohurjon'
     apiVersion '1.12'
     description 'The COODEX Minigame Plugin'
+    commands{
+        mv {
+            description = "mv command"
+            usage = 'usage : /mv'
+        }
+        spawn{
+            description = "spawn command"
+            usage =  "usage : /spawn"
+        }
+    }
 }
 
 task relocateShadowJar(type: ConfigureShadowRelocation) {
     target = tasks.shadowJar
 }
 
-task pluginJar(type : Copy){
-    from file("build/libs")
-    into file("E:/Minecraft/Server/1.12/1.12.2_CODEX/plugins")
+shadowJar{
+    destinationDir = file("E:\\Minecraft\\Server\\1.12\\1.12.2_CODEX\\plugins")
+
 }
 
 tasks.shadowJar.dependsOn tasks.relocateShadowJar
