@@ -1,4 +1,4 @@
-package kr.ohurjon.codex.minigame
+package kr.ohurjon.codex.minigame.leaderboard
 
 import java.util.*
 import kotlin.collections.HashMap
@@ -6,7 +6,7 @@ import kotlin.collections.HashMap
 class LeaderBoardManager {
 
     companion object {
-        var map = HashMap<Student,LeaderBoard>()
+        var map = HashMap<Student, LeaderBoard>()
     }
 
     fun getList(): MutableCollection<LeaderBoard> {

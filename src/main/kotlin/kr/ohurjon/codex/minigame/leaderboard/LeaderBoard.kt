@@ -1,11 +1,10 @@
-package kr.ohurjon.codex.minigame
-
-import org.bukkit.scoreboard.Score
+package kr.ohurjon.codex.minigame.leaderboard
 
 class LeaderBoard(val student : Student, var score : Int) : Comparable<LeaderBoard> {
 
     init {
         LeaderBoardManager().addList(this)
+
     }
 
     override fun compareTo(other: LeaderBoard): Int {
