@@ -1,12 +1,13 @@
 package kr.ohurjon.codex.minigame.leaderboard
 
+import org.bukkit.entity.Player
 import java.util.*
 import kotlin.collections.HashMap
 
 class LeaderBoardManager {
 
     companion object {
-        var map = HashMap<Student, LeaderBoard>()
+        var map = HashMap<Player, LeaderBoard>()
     }
 
     fun getList(): MutableCollection<LeaderBoard> {

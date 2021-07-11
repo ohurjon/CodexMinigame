@@ -1,6 +1,8 @@
 package kr.ohurjon.codex.minigame.leaderboard
 
-class LeaderBoard(val student : Student, var score : Int) : Comparable<LeaderBoard> {
+import org.bukkit.entity.Player
+
+class LeaderBoard(val student : Player, var score : Int) : Comparable<LeaderBoard> {
 
     init {
         LeaderBoardManager().addList(this)

@@ -1,6 +1,9 @@
 Takgu:
   time: 30
+  name: 가스트 튕겨내기
 Shulker:
   time: 50
+  name : 유도탄 피하기
 Jump:
-  time:
+  tick: 12000
+  name: 점프맵

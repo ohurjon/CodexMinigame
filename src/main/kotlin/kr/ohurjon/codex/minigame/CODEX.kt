@@ -1,18 +1,14 @@
 package kr.ohurjon.codex.minigame
 
 import kr.entree.spigradle.annotations.SpigotPlugin
-import org.bukkit.entity.LivingEntity
 import org.bukkit.event.Event
 import org.bukkit.event.inventory.InventoryType
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.InventoryHolder
 import org.bukkit.plugin.java.JavaPlugin
-import kr.ohurjon.codex.minigame.Npc
-import kr.ohurjon.codex.minigame.games.GameType
+import kr.ohurjon.codex.minigame.game.GameType
 import org.bukkit.*
 import org.bukkit.entity.Entity
-import org.bukkit.inventory.ItemStack
-import org.bukkit.scoreboard.Scoreboard
 import org.bukkit.scoreboard.Team
 
 @SpigotPlugin
@@ -37,9 +33,9 @@ class CODEX : JavaPlugin() {
 
         gui = server.createInventory(npc as InventoryHolder, InventoryType.CHEST, "GUI")
 
-        gui.setItem(GameType.JUMP.index,GameType.JUMP.getItem())
-        gui.setItem(GameType.SHULKER.index,GameType.SHULKER.getItem())
-        gui.setItem(GameType.TAKGU.index,GameType.TAKGU.getItem())
+        gui.setItem(GameType.JUMP.index,GameType.JUMP.getGuiItem())
+        gui.setItem(GameType.SHULKER.index,GameType.SHULKER.getGuiItem())
+        gui.setItem(GameType.TAKGU.index,GameType.TAKGU.getGuiItem())
 
         val jump = server.getWorld("world-jump")
 
