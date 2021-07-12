@@ -27,10 +27,10 @@ class Command : CommandExecutor,Default() {
         when((sender as Player).world.name){
             "world" -> {
                 val loc = sender.location
-                loc.world = server.getWorld("world-takgu")
+                loc.world = server.getWorld("world-play")
                 sender.teleport(loc)
             }
-            "world-takgu" -> {
+            "world-play" -> {
                 val loc = sender.location
                 loc.world = server.getWorld("world")
                 sender.teleport(loc)

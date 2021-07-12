@@ -7,7 +7,8 @@ import kotlin.collections.HashMap
 class LeaderBoardManager {
 
     companion object {
-        var map = HashMap<Player, LeaderBoard>()
+        var map = HashMap<String, LeaderBoard>()
+        private set
     }
 
     fun getList(): MutableCollection<LeaderBoard> {
@@ -17,8 +18,8 @@ class LeaderBoardManager {
         return list
     }
 
-    fun addList(score : LeaderBoard) {
-        map[score.student] = score
+    fun addList(name: String, score : LeaderBoard) {
+        map[name] = score
     }
 }
 

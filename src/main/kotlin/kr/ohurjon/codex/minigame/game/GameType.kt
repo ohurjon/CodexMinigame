@@ -26,5 +26,11 @@ enum class GameType(val title: String, val item : ItemStack, val index : Int) {
         return config.getString(title+".name")
     }
 
+    fun getMaxTick() : Long {
+        val plugin = CODEX.instance
+        val config = plugin.config
+        return config.getLong(title+".tick")
+    }
+
 }
 

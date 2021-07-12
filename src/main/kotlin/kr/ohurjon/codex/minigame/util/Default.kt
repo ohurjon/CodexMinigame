@@ -9,6 +9,8 @@ open class Default {
 
     val gui = CODEX.gui
 
+    val codex = CODEX
+
     val server = plugin.server
 
     val config = plugin.config

@@ -1,6 +1,7 @@
 package kr.ohurjon.codex.minigame
 
 import kr.entree.spigradle.annotations.SpigotPlugin
+import kr.ohurjon.codex.minigame.game.listener.jump.JumpEventListener
 import org.bukkit.event.Event
 import org.bukkit.event.inventory.InventoryType
 import org.bukkit.inventory.Inventory
@@ -9,6 +10,7 @@ import org.bukkit.plugin.java.JavaPlugin
 import kr.ohurjon.codex.minigame.game.GameType
 import org.bukkit.*
 import org.bukkit.entity.Entity
+import org.bukkit.inventory.ItemStack
 import org.bukkit.scoreboard.Team
 
 @SpigotPlugin
@@ -18,7 +20,6 @@ class CODEX : JavaPlugin() {
         lateinit var instance: CODEX
         lateinit var gui : Inventory
         lateinit var npc : Entity
-        lateinit var team : Team
             private set
     }
 
@@ -37,6 +38,8 @@ class CODEX : JavaPlugin() {
         gui.setItem(GameType.SHULKER.index,GameType.SHULKER.getGuiItem())
         gui.setItem(GameType.TAKGU.index,GameType.TAKGU.getGuiItem())
 
+
+
         val jump = server.getWorld("world-jump")
 
         if( jump == null) {
@@ -49,18 +52,14 @@ class CODEX : JavaPlugin() {
             server.createWorld(WorldCreator("world-play").type(WorldType.FLAT))
         }
 
-        server.createWorld(WorldCreator("world-takgu").environment(World.Environment.NETHER).type(WorldType.FLAT))
-
-        val scoreboard = server.scoreboardManager.newScoreboard
-        team = scoreboard.registerNewTeam("Default")
-        team.setOption(Team.Option.COLLISION_RULE,Team.OptionStatus.NEVER)
-        server.onlinePlayers.forEach { player -> team.addEntry(player.name) }
+        server.createWorld(WorldCreator("world-takgu").environment(World.Environment.NETHER))
 
 
         getCommand("mv").executor = Command()
         getCommand("spawn").executor = Command()
 
         server.pluginManager.registerEvents(EventListener(),this)
+        server.pluginManager.registerEvents(JumpEventListener(),this)
     }
 
 

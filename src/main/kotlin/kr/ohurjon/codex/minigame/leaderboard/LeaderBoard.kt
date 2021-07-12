@@ -1,12 +1,16 @@
 package kr.ohurjon.codex.minigame.leaderboard
 
+import kr.ohurjon.codex.minigame.game.GameType
 import org.bukkit.entity.Player
 
-class LeaderBoard(val student : Player, var score : Int) : Comparable<LeaderBoard> {
+class LeaderBoard(val name : String, var score : Long,var type : GameType) : Comparable<LeaderBoard> {
 
     init {
-        LeaderBoardManager().addList(this)
+        LeaderBoardManager().addList(name,this)
+    }
 
+    override fun toString(): String {
+        return name +" : "+score
     }
 
     override fun compareTo(other: LeaderBoard): Int {

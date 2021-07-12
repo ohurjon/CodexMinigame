@@ -1,8 +1,8 @@
 Takgu:
-  time: 30
+  tick: 30
   name: 가스트 튕겨내기
 Shulker:
-  time: 50
+  tick: 50
   name : 유도탄 피하기
 Jump:
   tick: 12000
