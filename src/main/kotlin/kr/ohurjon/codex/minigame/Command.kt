@@ -20,17 +20,17 @@ class Command : CommandExecutor,Default() {
     }
 
     fun spawn(sender: CommandSender?,args: Array<out String>?){
-        if( sender is Player) (sender).teleport(server.getWorld("world").spawnLocation)
+        if( sender is Player) (sender).teleport(spawn)
     }
 
     fun move(sender: CommandSender?,args: Array<out String>?){
         when((sender as Player).world.name){
             "world" -> {
                 val loc = sender.location
-                loc.world = server.getWorld("world-play")
+                loc.world = server.getWorld("world-jump")
                 sender.teleport(loc)
             }
-            "world-play" -> {
+            "world-jump" -> {
                 val loc = sender.location
                 loc.world = server.getWorld("world")
                 sender.teleport(loc)

@@ -11,6 +11,8 @@ open class Default {
 
     val codex = CODEX
 
+    val spawn = CODEX.spawn
+
     val server = plugin.server
 
     val config = plugin.config
