@@ -11,11 +11,14 @@ import org.bukkit.entity.Player
 class Command : CommandExecutor,Default() {
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
-        when(label.toLowerCase()) {
-            "mv" -> move(sender,args)
-            "spawn" -> spawn(sender, args)
-            "s" -> shulker(sender,args)
-            else -> return false
+        if(sender.isOp) {
+            when (label.toLowerCase()) {
+
+                "mv" -> move(sender, args)
+                "spawn" -> spawn(sender, args)
+                "s" -> shulker(sender, args)
+                else -> return false
+            }
         }
         return true
     }

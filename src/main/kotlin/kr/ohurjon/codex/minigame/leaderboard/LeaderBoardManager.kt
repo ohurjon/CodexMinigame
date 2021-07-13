@@ -1,25 +1,48 @@
 package kr.ohurjon.codex.minigame.leaderboard
 
+import kr.ohurjon.codex.minigame.CODEX
+import kr.ohurjon.codex.minigame.game.GameType
+import kr.ohurjon.codex.minigame.util.Default
+import org.bukkit.entity.ArmorStand
 import org.bukkit.entity.Player
 import java.util.*
-import kotlin.collections.HashMap
+import kotlin.collections.ArrayList
 
-class LeaderBoardManager {
+class LeaderBoardManager : Default() {
 
     companion object {
-        var map = HashMap<String, LeaderBoard>()
+        var list = ArrayList<LeaderBoard>()
         private set
     }
 
-    fun getList(): MutableCollection<LeaderBoard> {
-        val list = ArrayList(map.values)
-        Collections.sort(list, reverseOrder<LeaderBoard>())
+    fun getList(type: GameType): ArrayList<LeaderBoard> {
+        val typelist = ArrayList(list.filter{ leaderBoard -> leaderBoard.type == type })
 
-        return list
+
+        Collections.sort(typelist, reverseOrder<LeaderBoard>())
+
+        if(type == GameType.JUMP){
+            typelist.reverse()
+        }
+
+        var i : Int= 0
+        if(typelist.size <= 7){
+            i = typelist.size
+        } else {
+            i = 7
+        }
+
+        return ArrayList(typelist.slice(0 until i))
     }
 
-    fun addList(name: String, score : LeaderBoard) {
-        map[name] = score
+    fun removeArmorStand() {
+        for (ar : ArmorStand in CODEX.armorstands){
+            ar.remove()
+        }
+    }
+
+    fun addList(score : LeaderBoard) {
+        list.add(score)
     }
 }
 

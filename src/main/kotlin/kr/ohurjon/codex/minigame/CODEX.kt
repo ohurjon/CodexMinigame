@@ -8,8 +8,12 @@ import org.bukkit.inventory.InventoryHolder
 import org.bukkit.plugin.java.JavaPlugin
 import kr.ohurjon.codex.minigame.game.GameType
 import kr.ohurjon.codex.minigame.game.listener.GameEventListener
+import kr.ohurjon.codex.minigame.leaderboard.LeaderBoard
+import kr.ohurjon.codex.minigame.leaderboard.LeaderBoardManager
+import kr.ohurjon.codex.minigame.util.Util
 import kr.ohurjon.codex.minigame.util.WorldUtil
 import org.bukkit.*
+import org.bukkit.entity.ArmorStand
 import org.bukkit.entity.Entity
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.LivingEntity
@@ -22,15 +26,20 @@ class CODEX : JavaPlugin() {
         lateinit var gui : Inventory
         lateinit var npc : Entity
         lateinit var spawn : Location
+        lateinit var armorstands : HashSet<ArmorStand>
             private set
     }
 
     override fun onEnable() {
         instance = this
 
+        armorstands = HashSet()
+
         this.saveDefaultConfig()
 
         val world = server.getWorld("world")
+
+
 
         spawn = Location(world,0.5,4.0,3.5,180f,0f)
 
@@ -58,16 +67,15 @@ class CODEX : JavaPlugin() {
         getCommand("spawn").executor = Command()
         getCommand("s").executor = Command()
 
-
     }
 
     fun spawnEntity(location: Location,entityType: EntityType): Entity {
         return location.world.spawnEntity(location,entityType)
     }
 
-
     override fun onDisable() {
         npc.remove()
+        LeaderBoardManager().removeArmorStand()
     }
 
     fun callEvent(event: Event) {

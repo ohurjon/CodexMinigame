@@ -32,7 +32,7 @@ class Game( val player: Player , val type: GameType) : Default() {
         return server.scheduler.runTaskTimer(plugin, {
             if(!cancelled) {
                 tick += 1
-                plugin.callEvent(GameTime(player, this))
+                plugin.callEvent(GameTime(player,this))
             }
         },0L, 1L)
     }

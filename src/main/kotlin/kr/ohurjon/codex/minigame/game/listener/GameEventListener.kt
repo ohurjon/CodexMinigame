@@ -27,6 +27,7 @@ import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerMoveEvent
 import org.bukkit.event.player.PlayerRespawnEvent
+import org.bukkit.potion.PotionEffectType
 import sun.audio.AudioPlayer.player
 
 
@@ -34,13 +35,13 @@ class GameEventListener : Listener, Default() {
     @EventHandler
     fun GameTime(event: GameTime) {
         val n = event.game.roomnumber
-        event.player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent("Time : "+event.game.getTimeToStamp()))
+        event.player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent("§7Time : "+event.game.getTimeToStamp()))
         if(event.game.type == GameType.SHULKER && (event.game.tick % 200) == 0L){
 
-            val x = Util().randomRange(n*11+1,n*11+10).toDouble()
-            val z = Util().randomRange(n*11+1,n*11+10).toDouble()
+            val x = Util().randomRange(n*34+11,n*34+23).toDouble()
+            val z = Util().randomRange(n*35+13,n*35+25).toDouble()
 
-            val loc = Location(WorldUtilType.SHULKER.world,x,4.0,z)
+            val loc = Location(WorldUtilType.SHULKER.world,x,5.0,z)
 
             event.game.entitys.add(plugin.spawnEntity(loc,EntityType.SHULKER))
         }
@@ -61,7 +62,6 @@ class GameEventListener : Listener, Default() {
             if (game.type == GameType.JUMP) {
                 if (event.to.block.getRelative(BlockFace.DOWN).type == Material.EMERALD_BLOCK) {
                     plugin.callEvent(GameEnd(event.player, game))
-                    event.player.sendTitle("성공 하셨습니다!", game.getTimeToStamp(), 60, 200, 60)
                 }
             }
         }
@@ -91,6 +91,7 @@ class GameEventListener : Listener, Default() {
                         plugin.callEvent(GameRespawn(player,game))
                     } else {
                         plugin.callEvent(GameEnd(player,game))
+
                     }
                     event.damage = 0.0
                 }
@@ -104,22 +105,25 @@ class GameEventListener : Listener, Default() {
         event.game.stop()
         event.player.teleport(spawn)
         GameManager().removeGame(event.player)
+        server.scheduler.runTaskLater(plugin,{event.player.sendTitle(event.player.name + "님의 점수", event.game.getTimeToStamp(), 60, 100, 60)
+            event.player.health = 20.0
+            event.player.removePotionEffect(PotionEffectType.LEVITATION)                                  }, 20L)
+
+
         LeaderBoard(event.player.name, event.game.tick, event.game.type)
     }
 
     @EventHandler
     fun GameStart(event: GameStart) {
-        event.game.start()
         when(event.game.type){
             GameType.JUMP -> {
                 event.player.teleport(Location(WorldUtilType.JUMP.world, 0.5, 88.0, 4.5, 180f, 0f))
             }
             GameType.SHULKER -> {
-                event.player.teleport(Location(WorldUtilType.SHULKER.world,(event.game.roomnumber)*12 + 6.5,4.0,(event.game.roomnumber)*12 + 6.5))
+                event.player.teleport(Location(WorldUtilType.SHULKER.world,(event.game.roomnumber)*34 + 17.5,5.0,(event.game.roomnumber)*36 + 19.5))
             }
             GameType.TAKGU -> {
-                event.player.teleport(Location(WorldUtilType.TAKGU.world,(event.game.roomnumber)*45+22.5,4.0,(event.game.roomnumber)*45+22.5))
-            }
+                event.player.teleport(Location(WorldUtilType.TAKGU.world,(event.game.roomnumber)*44+23.0,6.0,(event.game.roomnumber)*44+23.0))            }
             else -> {
                 event.player.teleport(CODEX.spawn)
             }
