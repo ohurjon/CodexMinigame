@@ -1,7 +1,9 @@
 package kr.ohurjon.codex.minigame.game
 
 import kr.ohurjon.codex.minigame.CODEX
+import org.bukkit.Location
 import org.bukkit.Material
+import org.bukkit.World
 import org.bukkit.inventory.ItemStack
 
 enum class GameType(val title: String, val item : ItemStack, val index : Int) {
@@ -25,12 +27,5 @@ enum class GameType(val title: String, val item : ItemStack, val index : Int) {
 
         return config.getString(title+".name")
     }
-
-    fun getMaxTick() : Long {
-        val plugin = CODEX.instance
-        val config = plugin.config
-        return config.getLong(title+".tick")
-    }
-
 }
 

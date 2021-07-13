@@ -8,6 +8,7 @@ import org.bukkit.inventory.InventoryHolder
 import org.bukkit.plugin.java.JavaPlugin
 import kr.ohurjon.codex.minigame.game.GameType
 import kr.ohurjon.codex.minigame.game.listener.GameEventListener
+import kr.ohurjon.codex.minigame.util.WorldUtil
 import org.bukkit.*
 import org.bukkit.entity.Entity
 import org.bukkit.entity.EntityType
@@ -44,28 +45,24 @@ class CODEX : JavaPlugin() {
         gui.setItem(GameType.TAKGU.index,GameType.TAKGU.getGuiItem())
 
 
+        WorldUtil("world-jump",WorldType.NORMAL)
+        WorldUtil("world-shulker",WorldType.FLAT)
+        WorldUtil("world-takgu",WorldType.FLAT)
+        WorldUtil("world-build",WorldType.FLAT)
 
-        val jump = server.getWorld("world-jump")
-
-        if( jump == null) {
-            server.createWorld(WorldCreator("world-jump"))
-        }
-
-        val play = server.getWorld("world-play")
-
-        if( play == null) {
-            server.createWorld(WorldCreator("world-play").type(WorldType.FLAT))
-        }
-
-        server.createWorld(WorldCreator("world-takgu").environment(World.Environment.NETHER))
 
         server.pluginManager.registerEvents(EventListener(),this)
         server.pluginManager.registerEvents(GameEventListener(),this)
 
         getCommand("mv").executor = Command()
         getCommand("spawn").executor = Command()
+        getCommand("s").executor = Command()
 
 
+    }
+
+    fun spawnEntity(location: Location,entityType: EntityType): Entity {
+        return location.world.spawnEntity(location,entityType)
     }
 
 

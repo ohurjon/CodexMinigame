@@ -1,9 +1,6 @@
 Takgu:
-  tick: 30
   name: 가스트 튕겨내기
 Shulker:
-  tick: 50
   name : 유도탄 피하기
 Jump:
-  tick: 12000
   name: 점프맵

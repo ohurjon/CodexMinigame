@@ -32,10 +32,16 @@ class EventListener : Listener, Default() {
 
     @EventHandler
     fun GUIclick(event: InventoryClickEvent){
+        val player = event.whoClicked as Player
         when (event.currentItem) {
             GameType.JUMP.getGuiItem() -> {
-                val player = event.whoClicked as Player
                 plugin.callEvent(GameStart(player,Game(player,GameType.JUMP)))
+            }
+            GameType.SHULKER.getGuiItem() -> {
+                plugin.callEvent(GameStart(player,Game(player,GameType.SHULKER)))
+            }
+            GameType.TAKGU.getGuiItem() -> {
+                plugin.callEvent(GameStart(player,Game(player,GameType.TAKGU)))
             }
             else -> event.isCancelled = false
         }
