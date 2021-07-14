@@ -1,6 +1,10 @@
 Takgu:
-  name: 가스트 튕겨내기
+  name: 화염구 튕겨내기
+  description : 가스트가 공격하는 화염구를 쳐내며 오래 살아남으세요!
 Shulker:
   name : 유도탄 피하기
+  description : 유도탄을 때려 부수거나 피해 오래 살아남으세요!
 Jump:
   name: 점프맵
+  description : 누구보다 빠르게 결승점에 도달하세요!
+

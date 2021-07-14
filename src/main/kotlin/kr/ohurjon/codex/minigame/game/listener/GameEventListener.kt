@@ -27,6 +27,7 @@ import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerMoveEvent
 import org.bukkit.event.player.PlayerRespawnEvent
+import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 import sun.audio.AudioPlayer.player
 
@@ -45,9 +46,9 @@ class GameEventListener : Listener, Default() {
 
             event.game.entitys.add(plugin.spawnEntity(loc,EntityType.SHULKER))
         }
-        if(event.game.type == GameType.TAKGU && (event.game.tick % 200) == 0L){
-            val x = Util().randomRange(n*45+1,n*45+44).toDouble()
-            val z = Util().randomRange(n*45+1,n*45+44).toDouble()
+        if(event.game.type == GameType.TAKGU && (event.game.tick % 100) == 0L){
+            val x = Util().randomRange(n*45+4,n*45+40).toDouble()
+            val z = Util().randomRange(n*45+4,n*45+40).toDouble()
 
             val loc = Location(WorldUtilType.TAKGU.world,x,25.0,z)
 
@@ -107,10 +108,10 @@ class GameEventListener : Listener, Default() {
         GameManager().removeGame(event.player)
         server.scheduler.runTaskLater(plugin,{event.player.sendTitle(event.player.name + "님의 점수", event.game.getTimeToStamp(), 60, 100, 60)
             event.player.health = 20.0
-            event.player.removePotionEffect(PotionEffectType.LEVITATION)                                  }, 20L)
-
-
-        LeaderBoard(event.player.name, event.game.tick, event.game.type)
+            event.player.removePotionEffect(PotionEffectType.LEVITATION)
+            event.player.removePotionEffect(PotionEffectType.SLOW)
+            event.player.removePotionEffect(PotionEffectType.JUMP)}, 20L)
+        LeaderBoard(event.player, event.game.tick, event.game.type)
     }
 
     @EventHandler
@@ -123,7 +124,12 @@ class GameEventListener : Listener, Default() {
                 event.player.teleport(Location(WorldUtilType.SHULKER.world,(event.game.roomnumber)*34 + 17.5,5.0,(event.game.roomnumber)*36 + 19.5))
             }
             GameType.TAKGU -> {
-                event.player.teleport(Location(WorldUtilType.TAKGU.world,(event.game.roomnumber)*44+23.0,6.0,(event.game.roomnumber)*44+23.0))            }
+                event.player.teleport(Location(WorldUtilType.TAKGU.world,(event.game.roomnumber)*44+23.0,6.0,(event.game.roomnumber)*44+23.0))
+                val potions = event.player.activePotionEffects
+                potions.add(PotionEffect(PotionEffectType.SLOW,Int.MAX_VALUE,3,false,false))
+                potions.add(PotionEffect(PotionEffectType.JUMP,Int.MAX_VALUE, 128, false,false))
+                event.player.addPotionEffects(potions)
+            }
             else -> {
                 event.player.teleport(CODEX.spawn)
             }
@@ -144,6 +150,10 @@ class GameEventListener : Listener, Default() {
     fun GameLeave(event: GameLeave) {
         event.game.stop()
         event.player.teleport(spawn)
+        event.player.health = 20.0
+        event.player.removePotionEffect(PotionEffectType.LEVITATION)
+        event.player.removePotionEffect(PotionEffectType.SLOW)
+        event.player.removePotionEffect(PotionEffectType.JUMP)
     }
 
     @EventHandler

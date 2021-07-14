@@ -1,5 +1,6 @@
 package kr.ohurjon.codex.minigame
 
+import com.google.gson.Gson
 import kr.entree.spigradle.annotations.SpigotPlugin
 import org.bukkit.event.Event
 import org.bukkit.event.inventory.InventoryType
@@ -13,6 +14,7 @@ import kr.ohurjon.codex.minigame.leaderboard.LeaderBoardManager
 import kr.ohurjon.codex.minigame.util.Util
 import kr.ohurjon.codex.minigame.util.WorldUtil
 import org.bukkit.*
+import org.bukkit.configuration.serialization.ConfigurationSerialization
 import org.bukkit.entity.ArmorStand
 import org.bukkit.entity.Entity
 import org.bukkit.entity.EntityType
@@ -39,8 +41,6 @@ class CODEX : JavaPlugin() {
 
         val world = server.getWorld("world")
 
-
-
         spawn = Location(world,0.5,4.0,3.5,180f,0f)
 
         npc = world.spawnEntity(Location(world,0.5,4.0,0.5),EntityType.VILLAGER)
@@ -59,6 +59,11 @@ class CODEX : JavaPlugin() {
         WorldUtil("world-takgu",WorldType.FLAT)
         WorldUtil("world-build",WorldType.FLAT)
 
+        //ConfigurationSerialization.registerClass(this.javaClass)
+
+        //LeaderBoardManager().loadLeaderboard()
+
+        LeaderBoardManager().reloadLeaderBoard()
 
         server.pluginManager.registerEvents(EventListener(),this)
         server.pluginManager.registerEvents(GameEventListener(),this)

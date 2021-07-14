@@ -68,7 +68,6 @@ task relocateShadowJar(type: ConfigureShadowRelocation) {
 
 shadowJar{
     destinationDir = file("E:\\Minecraft\\Server\\1.12\\1.12.2_CODEX\\plugins")
-
 }
 
 tasks.shadowJar.dependsOn tasks.relocateShadowJar

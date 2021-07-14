@@ -4,6 +4,7 @@ import kr.ohurjon.codex.minigame.game.Game
 import kr.ohurjon.codex.minigame.game.GameType
 import kr.ohurjon.codex.minigame.game.event.GameStart
 import kr.ohurjon.codex.minigame.util.Default
+import org.bukkit.GameMode
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
@@ -13,6 +14,7 @@ import org.bukkit.event.entity.FoodLevelChangeEvent
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.player.PlayerInteractEntityEvent
 import org.bukkit.event.player.PlayerJoinEvent
+import org.bukkit.potion.PotionEffectType
 
 class EventListener : Listener, Default() {
 
@@ -55,8 +57,13 @@ class EventListener : Listener, Default() {
     @EventHandler
     fun join(event: PlayerJoinEvent){
         event.player.teleport(spawn)
+        event.player.gameMode = GameMode.ADVENTURE
         event.joinMessage = "CODEX 서버에 "+event.player.name+"님이 접속 하셨습니다!"
         event.player.sendTitle("CODEX 서버에 오신걸 환영합니다.","스폰 앞 주민에 모든 게임이 담겨있습니다!",60,100,10)
+        event.player.health = 20.0
+        event.player.removePotionEffect(PotionEffectType.LEVITATION)
+        event.player.removePotionEffect(PotionEffectType.SLOW)
+        event.player.removePotionEffect(PotionEffectType.JUMP)
     }
 
 }

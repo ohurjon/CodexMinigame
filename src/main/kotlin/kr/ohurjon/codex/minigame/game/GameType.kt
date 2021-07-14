@@ -15,7 +15,10 @@ enum class GameType(val title: String, val item : ItemStack, val index : Int) {
     fun getGuiItem() : ItemStack {
         val item = item
         val data = item.itemMeta
-        data.displayName = "§e" + getName()
+        val lore = ArrayList<String>()
+        data.displayName = "§l§e" + getName()
+        lore.add(getDescription())
+        data.lore = lore
         item.itemMeta = data
 
         return item
@@ -26,6 +29,13 @@ enum class GameType(val title: String, val item : ItemStack, val index : Int) {
         val config = plugin.config
 
         return config.getString(title+".name")
+    }
+
+    fun getDescription() : String{
+        val plugin = CODEX.instance
+        val config = plugin.config
+
+        return config.getString(title+".description")
     }
 }
 

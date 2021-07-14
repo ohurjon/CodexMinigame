@@ -1,21 +1,55 @@
 package kr.ohurjon.codex.minigame.leaderboard
 
 import kr.ohurjon.codex.minigame.game.GameType
+import kr.ohurjon.codex.minigame.util.Default
 import kr.ohurjon.codex.minigame.util.Util
 import kr.ohurjon.codex.minigame.util.WorldUtilType
 import org.bukkit.Location
-import org.bukkit.World
+import org.bukkit.configuration.serialization.ConfigurationSerializable
+import org.bukkit.configuration.serialization.ConfigurationSerialization
 import org.bukkit.entity.Player
 
-class LeaderBoard(val name : String, var score : Long,var type : GameType) : Comparable<LeaderBoard> {
+
+class LeaderBoard(val player : Player, var score : Long, var type : GameType) : Default(),Comparable<LeaderBoard>,ConfigurationSerializable {
 
     init {
-        LeaderBoardManager().addList(this)
-        reloadLeaderBoard()
+        val leaderBoard = LeaderBoardManager().getLeaderBoard(player,type)
+        if( leaderBoard != null) {
+            if(type == GameType.JUMP){
+                if (leaderBoard.score > score){
+                    LeaderBoardManager().addList(this)
+                }
+            }else {
+                if (leaderBoard.score < score){
+                    LeaderBoardManager().addList(this)
+                }
+            }
+        } else {
+            LeaderBoardManager().addList(this)
+        }
+        //LeaderBoardManager().saveLeaderBoard()
+        LeaderBoardManager().reloadLeaderBoard()
+    }
+
+    override fun equals(other: Any?): Boolean {
+        val leaderBoard = other as LeaderBoard
+        return (leaderBoard.player == player)
+    }
+
+    override fun hashCode(): Int {
+        return player.hashCode()
     }
 
     override fun toString(): String {
-        return name +" : "+getTimeToStamp(score)
+        return player.name +" : "+getTimeToStamp(score)
+    }
+
+    override fun serialize(): HashMap<String, Any> {
+        val result : HashMap<String,Any> = HashMap()
+        result["name"] = player.name
+        result["score"] = score.toString()
+        result["type"] = type.title
+        return result
     }
 
     override fun compareTo(other: LeaderBoard): Int {
@@ -32,57 +66,14 @@ class LeaderBoard(val name : String, var score : Long,var type : GameType) : Com
         return String.format("%d.%02d",time,sec)
     }
 
-    fun reloadLeaderBoard() {
-        LeaderBoardManager().removeArmorStand()
-
-        val jump = LeaderBoardManager().getList(GameType.JUMP)
-        val shulker = LeaderBoardManager().getList(GameType.SHULKER)
-        val takgu = LeaderBoardManager().getList(GameType.TAKGU)
-
-        val location = Location(WorldUtilType.DEFAULT.world,0.0,0.0,0.0)
-
-        var i = 1
-
-        location.y = 7.0
-
-        location.z = 20.5
-        location.x = 5.5
-
-        Util().ArmorStand("&l&e"+GameType.JUMP.getName(),location)
-        location.y -= 0.5
-
-        jump.forEach{ leaderBoard: LeaderBoard -> run {
-            location.y -= 0.5
-            Util().ArmorStand(i.toString()+". "+leaderBoard.toString(),location)
-            i += 1
-        }}
-
-        location.x = 0.5
-        location.y = 7.0
-
-        Util().ArmorStand("&l&e"+GameType.SHULKER.getName(),location)
-        location.y -= 0.5
-        i = 1
-        shulker.forEach{ leaderBoard: LeaderBoard -> run {
-            location.y -= 0.5
-            Util().ArmorStand(i.toString()+". "+leaderBoard.toString(),location)
-            i += 1
-        }}
-
-        location.x = -4.5
-        location.y = 7.0
-
-        i = 1
-        Util().ArmorStand("&l&e"+GameType.TAKGU.getName(),location)
-        location.y -= 0.5
-        takgu.forEach{ leaderBoard: LeaderBoard -> run {
-            location.y -= 0.5
-            Util().ArmorStand(i.toString()+". "+leaderBoard.toString(),location)
-            i += 1
-        }}
-
+    fun deserializeObject(map : LinkedHashMap<String,Any>) : LeaderBoard{
+        return LeaderBoard(server.getPlayer(map["name"] as String), map["score"] as Long, GameType.valueOf(map["type"] as String))
     }
+
+
 }
+
+
 
 
 
